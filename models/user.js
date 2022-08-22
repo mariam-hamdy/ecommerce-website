@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema({
         ],
         unique: true
     },
-    passwordHash: {
+    password: {
         type: String,
         required: [true, 'please provide the password'],
         minlength: 4
@@ -52,12 +52,12 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.pre('save', async function(next) {
     const salt = await bcrypt.genSalt(10)
-    this.passwordHash = await bcrypt.hash(this.passwordHash, salt)
+    this.password = await bcrypt.hash(this.password, salt)
     next()
 })
 
 UserSchema.methods.comparePassword = async function(enteredPassword) {
-    const isSame = await bcrypt.compare(enteredPassword, this.passwordHash)
+    const isSame = await bcrypt.compare(enteredPassword, this.password)
     return isSame
 }
 
