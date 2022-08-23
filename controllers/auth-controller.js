@@ -10,17 +10,31 @@ const register = async(req, res) => {
         password
     } = req.body
     if(!name || !email || !password) {
-        throw new BadRequestError('no data entered')
+        throw new BadRequestError('please enter the data')
     }
    const user = await User.create({...req.body})
    const token = user.generateToken()
 
-   res.status(StatusCodes.CREATED).json({username: user.name, token})
+   res.status(StatusCodes.CREATED).json({user: {name:user.name}, token})
 
 }
 
 const login = async(req,res) => {
-    res.send('user logged in')
+    const {email, password} = req.body
+    if(!email || !password) {
+        throw new BadRequestError('please provide email or password')
+    }
+    const user = await User.findOne({email})
+    if(!user) {
+        throw new UnauthenticatedError('The provided email or password not found')
+    }
+    const isSame = await user.comparePassword(password)
+    if(!isSame) {
+        throw new UnauthenticatedError('The provided email or password not found')
+    }
+    const token = user.generateToken()
+
+    res.status(StatusCodes.OK).json({user: {name:user.name}, token})
 }
 
 module.exports = {
