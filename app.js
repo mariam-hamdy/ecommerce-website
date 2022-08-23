@@ -18,8 +18,10 @@ app.options("*", cors());
 //routes
 const authRoute = require('./routes/auth-route')
 const userRoute = require('./routes/user-route')
+const categoryRoute = require('./routes/category-route')
 app.use('/api/v1/auth', authRoute)
 app.use('/api/v1/users', userRoute)
+app.use('/api/v1/categories', categoryRoute)
 
 
 
