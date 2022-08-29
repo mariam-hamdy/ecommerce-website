@@ -19,9 +19,13 @@ app.options("*", cors());
 const authRoute = require('./routes/auth-route')
 const userRoute = require('./routes/user-route')
 const categoryRoute = require('./routes/category-route')
+const productRoute = require('./routes/product-route')
+const orderRoute = require('./routes/order-route')
 app.use('/api/v1/auth', authRoute)
 app.use('/api/v1/users', userRoute)
 app.use('/api/v1/categories', categoryRoute)
+app.use('/api/v1/products', productRoute)
+app.use('/api/v1/orders', orderRoute)
 
 
 
